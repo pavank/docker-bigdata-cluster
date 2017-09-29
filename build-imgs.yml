@@ -1,0 +1,114 @@
+version: "2.3"
+
+services:
+ hadoop-base:
+  build: 
+    context: ./hadoop/base
+    labels:
+      description: "Base Image for Hadoop Nodes"
+  image: hadoop-base:0.2 
+
+ hadoop-namenode:
+  build:
+    context: ./hadoop/namenode
+    labels:
+      description: "Image for Hadoop NameNode"
+  image: hadoop-namenode:0.2
+  links:
+     - "hadoop-base"
+
+ hadoop-datanode:
+  build:
+    context: ./hadoop/datanode
+    labels:
+      description: "Image for Hadoop DataNode"
+  image: hadoop-datanode:0.2
+  links:
+     - "hadoop-base"
+
+ yarn-nodemanager:
+  build:
+    context: ./hadoop/nodemanager
+    labels:
+      description: "Image for Hadoop Node Manager"
+  image: yarn-nodemanager:0.2
+  links:
+     - "hadoop-base"
+
+ yarn-resourcemanger:
+  build:
+    context: ./hadoop/resourcemanager
+    labels:
+      description: "Image for Yarn Resource Manager"
+  image: yarn-resourcemanager:0.2
+  links:
+     - "hadoop-base"
+
+ yarn-historyserver:
+  build:
+    context: ./hadoop/historyserver
+    labels:
+      description: "Image for Yarn timeline Server"
+  image: yarn-historyserver:0.2
+  links:
+     - "hadoop-base"
+
+ hive-base:
+  build:
+    context: ./hive/base
+    labels:
+      description: "Base Image for Hive Nodes"
+  image: hive-base:0.2
+  links:
+     - "hadoop-base"
+
+ hive-postgres:
+  build:
+    context: ./hive/postgres
+    labels:
+      description: "Image for Postgres DB for hive metastore schema"
+  image: hive-postgres:0.2
+
+ hive-metastore:
+  build:
+    context: ./hive/metastore
+    labels:
+      description: "Image for Hive MetaStore Server"
+  image: hive-metastore:0.2
+  links:
+     - "hive-base"
+
+ hive-server:
+  build:
+    context: ./hive/hive-server
+    labels:
+      description: "Image for Hive Server"
+  image: hive-server:0.2
+  links:
+     - "hive-base"
+
+ spark-base:
+  build:
+     context: ./spark/base
+     labels:
+       description: "Base image for Spark"
+  image: spark-base:0.2
+
+ spark-master:
+  build:
+    context: ./spark/master
+    labels:
+      description: "Spark master Node"
+  image: spark-master:0.2
+  links:
+     - "spark-base"
+
+ spark-worker:
+  build:
+    context: ./spark/worker
+    labels:
+      description: "Spark Worker Node"
+  image: spark-worker:0.2
+  links:
+     - "spark-base"
+

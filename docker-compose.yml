@@ -1,0 +1,368 @@
+version: "2.3"
+
+services:
+  bigdata-nginx:
+    image: nginx
+    container_name: bigdata-nginx
+    hostname: bigdata-nginx.bigdatacluster
+    mem_limit: 128m
+    mem_reservation: 64m 
+    networks:
+     bigdatacluster:
+        aliases:
+           - nginx.bigdatacluster.com
+    ports:
+       - "80:80"
+       - "8042:8042"
+       - "8080:8080"
+       - "8081:8081"
+       - "8088:8088" 
+       - "8188:8188" 
+       - "10002:10002" 
+       - "50070:50070"
+       - "50075:50075" 
+    volumes:
+       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - hadoop-namenode
+      - hadoop-datanode1
+      - hadoop-datanode2
+      - hadoop-datanode3
+      - yarn-historyserver
+      - yarn-resourcemanager  
+      - yarn-nodemanager1
+      - yarn-nodemanager2
+      - yarn-nodemanager3
+      - spark-master
+      - spark-worker1
+      - spark-worker2
+      - spark-worker3    
+   
+
+  hadoop-namenode:
+    image: hadoop-namenode:0.2
+    container_name: hadoop-namenode
+    hostname: hadoop-namenode.bigdatacluster
+    mem_limit: 2g
+    mem_reservation: 1g
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    networks:
+        bigdatacluster:
+          aliases:
+            - namenode.bigdatacluster.com
+    environment:
+      - CLUSTER_NAME=bigdatacluster
+    env_file:
+      - ./bigdata-cluster.env
+
+  hadoop-datanode1:
+    image: hadoop-datanode:0.2
+    container_name: hadoop-datanode1
+    hostname: hadoop-datanode1.bigdatacluster
+    mem_limit: 2g
+    mem_reservation: 1g
+    depends_on:
+      hadoop-namenode :
+         condition: service_healthy
+    volumes:
+      - hadoop_datanode1:/hadoop/dfs/data
+    networks:
+        bigdatacluster:
+          aliases:
+            - datanode1.bigdatacluster.com
+    env_file:
+      - ./bigdata-cluster.env
+
+  hadoop-datanode2:
+    image: hadoop-datanode:0.2
+    container_name: hadoop-datanode2
+    hostname: hadoop-datanode2.bigdatacluster
+    mem_limit: 2g
+    mem_reservation: 1g
+    depends_on:
+      hadoop-namenode:
+         condition: service_healthy
+    volumes:
+      - hadoop_datanode2:/hadoop/dfs/data
+    networks:
+        bigdatacluster:
+          aliases:
+            - datanode2.bigdatacluster.com
+    env_file:
+      - ./bigdata-cluster.env
+
+
+  hadoop-datanode3:
+    image: hadoop-datanode:0.2
+    container_name: hadoop-datanode3
+    hostname: hadoop-datanode3.bigdatacluster
+    mem_limit: 2g
+    mem_reservation: 1g
+    depends_on:
+      hadoop-namenode:
+         condition: service_healthy
+    volumes:
+      - hadoop_datanode3:/hadoop/dfs/data
+    networks:
+        bigdatacluster:
+          aliases:
+            - datanode3.bigdatacluster.com
+    env_file:
+      - ./bigdata-cluster.env
+
+
+  yarn-resourcemanager:
+    image: yarn-resourcemanager:0.2
+    container_name: yarn-resourcemanager
+    hostname: yarn-resourcemanager.bigdatacluster
+    mem_limit: 2g
+    mem_reservation: 1g
+    networks:
+        bigdatacluster:
+          aliases:
+            - resourcemanager.bigdatacluster.com
+    depends_on:
+      hadoop-namenode:
+         condition: service_healthy
+    env_file:
+      - ./bigdata-cluster.env
+  
+  yarn-historyserver:
+    image: yarn-historyserver:0.2
+    container_name: yarn-historyserver
+    hostname: yarn-historyserver.bigdatacluster
+    mem_limit: 1g
+    mem_reservation: 512m
+    depends_on:
+      yarn-resourcemanager:
+         condition: service_healthy
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    networks:
+        bigdatacluster:
+          aliases:
+            - historyserver.bigdatacluster.com
+    env_file:
+      - ./bigdata-cluster.env
+  
+  yarn-nodemanager1:
+    image: yarn-nodemanager:0.2
+    container_name: yarn-nodemanager1
+    hostname: yarn-nodemanager1.bigdatacluster
+    mem_limit: 4g
+    mem_reservation: 2g
+    networks:
+      bigdatacluster:
+          aliases:
+            - nodemanager1.bigdatacluster.com
+    depends_on:
+      yarn-resourcemanager:
+         condition: service_healthy
+    env_file:
+      - ./bigdata-cluster.env
+
+  yarn-nodemanager2:
+    image: yarn-nodemanager:0.2
+    container_name: yarn-nodemanager2
+    hostname: yarn-nodemanager2.bigdatacluster
+    mem_limit: 4g
+    mem_reservation: 2g
+    networks:
+      bigdatacluster:
+          aliases:
+            - nodemanager2.bigdatacluster.com
+    depends_on:
+      yarn-resourcemanager:
+         condition: service_healthy
+    env_file:
+      - ./bigdata-cluster.env
+
+  yarn-nodemanager3:
+    image: yarn-nodemanager:0.2
+    container_name: yarn-nodemanager3
+    hostname: yarn-nodemanager3.bigdatacluster
+    mem_limit: 4g
+    mem_reservation: 2g
+    networks:
+      bigdatacluster:
+          aliases:
+            - nodemanager3.bigdatacluster.com
+    depends_on:
+      yarn-resourcemanager:
+         condition: service_healthy
+    env_file:
+      - ./bigdata-cluster.env
+
+  hive-postgres:
+    image: hive-postgres:0.2
+    container_name: hive-postgres
+    hostname: hive-postgres.bigdatacluster
+    mem_limit: 512m
+    mem_reservation: 256m
+    volumes:
+      - hive_postgres_pgdata:/var/lib/postgresql/data/pgdata
+    networks:
+      bigdatacluster:
+        aliases:
+           - postgres.bigdatacluster.com 
+
+  hive-metastore:
+    image: hive-metastore:0.2
+    container_name: hive-metastore
+    hostname: hive-metastore.bigdatacluster
+    mem_limit: 1g
+    mem_reservation: 512m    
+    networks:
+      bigdatacluster:
+        aliases:
+           - hivemetastore.bigdatacluster.com
+    depends_on:
+      hive-postgres:
+           condition: service_healthy
+    env_file:
+      - ./bigdata-cluster.env
+    command: /opt/hive/bin/hive --service metastore
+
+  hive-server:
+    image: hive-server:0.2
+    container_name: hive-server
+    hostname: hive-server.bigdatacluster 
+    mem_limit: 4g
+    mem_reservation: 2g
+    networks:
+      bigdatacluster:
+        aliases:
+           - hiveserver.bigdatacluster.com
+    depends_on:
+      hive-metastore:
+          condition: service_healthy
+    env_file:
+      - ./bigdata-cluster.env
+    ports:
+      - "10000:10000"
+
+
+  spark-master:
+    image: spark-master:0.2
+    container_name: spark-master
+    hostname: spark-master.bigdatacluster
+    mem_limit: 2g
+    mem_reservation: 1g
+    networks:
+        bigdatacluster:
+          aliases:
+            - sparkmaster.bigdatacluster.com
+    volumes:
+       - spark_master_logs:/var/log/spark-master   
+    depends_on:
+      yarn-resourcemanager:
+         condition: service_healthy
+    env_file:
+      - ./bigdata-cluster.env
+
+  spark-worker1:
+    image: spark-worker:0.2
+    container_name: spark-worker1
+    hostname: spark-worker1.bigdatacluster
+    mem_limit: 4g
+    mem_reservation: 2g
+    networks:
+        bigdatacluster:
+          aliases:
+            - sparkworker1.bigdatacluster.com
+    volumes:
+       - spark_worker1_logs:/var/log/spark-worker   
+    depends_on:
+       spark-master:
+         condition: service_healthy
+    environment:
+       - SPARK_MASTER=sparkmaster.bigdatacluster.com:7077
+    env_file:
+      - ./bigdata-cluster.env
+
+  spark-worker2:
+    image: spark-worker:0.2
+    container_name: spark-worker2
+    hostname: spark-worker2.bigdatacluster
+    mem_limit: 4g
+    mem_reservation: 2g
+    networks:
+        bigdatacluster:
+          aliases:
+            - sparkworker2.bigdatacluster.com
+    volumes:
+       - spark_worker2_logs:/var/log/spark-worker   
+    depends_on:
+       spark-master:
+         condition: service_healthy
+    environment:
+       - SPARK_MASTER=spark://sparkmaster.bigdatacluster.com:7077
+    env_file:
+      - ./bigdata-cluster.env
+
+  spark-worker3:
+    image: spark-worker:0.2
+    container_name: spark-worker3
+    hostname: spark-worker3.bigdatacluster
+    mem_limit: 4g
+    mem_reservation: 2g
+    networks:
+        bigdatacluster:
+          aliases:
+            - sparkworker3.bigdatacluster.com
+    volumes:
+       - spark_worker3_logs:/var/log/spark-worker   
+    depends_on:
+       spark-master:
+         condition: service_healthy
+    environment:
+       - SPARK_MASTER=spark://sparkmaster.bigdatacluster.com:7077
+    env_file:
+      - ./bigdata-cluster.env
+
+  
+volumes:
+  hadoop_namenode:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/hadoop/nn   
+  hadoop_datanode1:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data2/dockervolumes/hadoop/dn1
+  hadoop_datanode2:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data2/dockervolumes/hadoop/dn2
+  hadoop_datanode3:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data2/dockervolumes/hadoop/dn3
+  hadoop_historyserver:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/yarn/hs
+  hive_postgres_pgdata:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/hive/postgres/pgdata
+  spark_master_logs:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/spark/master/logs
+  spark_worker1_logs:
+         driver: local-persist
+         driver_opts:
+               mountpoint: /data2/dockervolumes/spark/worker1/logs
+  spark_worker2_logs:
+         driver: local-persist
+         driver_opts:
+               mountpoint: /data2/dockervolumes/spark/worker2/logs
+  spark_worker3_logs:
+         driver: local-persist
+         driver_opts:
+               mountpoint: /data2/dockervolumes/spark/worker3/logs
+networks:
+  bigdatacluster:
+    external: true
