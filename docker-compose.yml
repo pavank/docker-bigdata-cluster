@@ -1,10 +1,61 @@
 version: "2.3"
 
 services:
-  bigdata-nginx:
+  zknode1:
+    image: zookeeper
+    container_name: zknode1
+    hostname: zknode1.bigdatacluster
+    mem_limit: ${ZOOKEEPER_MEM_LIM}
+    mem_reservation: ${ZOOKEEPER_MEM_RES}
+    volumes:
+      - zknode1_data:/data
+      - zknode1_log:/datalog
+    networks:
+      bigdatacluster:
+        aliases:
+         - zknode1.bigdatacluster.com
+    environment:
+       ZOO_MY_ID: 1
+       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
+
+  zknode2:
+    image: zookeeper
+    container_name: zknode2
+    hostname: zknode2.bigdatacluster
+    mem_limit: ${ZOOKEEPER_MEM_LIM}
+    mem_reservation: ${ZOOKEEPER_MEM_RES}
+    volumes:
+      - zknode2_data:/data
+      - zknode2_log:/datalog
+    networks:
+      bigdatacluster:
+        aliases:
+         - zknode2.bigdatacluster.com
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
+
+  zknode3:
+    image: zookeeper
+    container_name: zknode3
+    hostname: zknode3.bigdatacluster
+    mem_limit: ${ZOOKEEPER_MEM_LIM}
+    mem_reservation: ${ZOOKEEPER_MEM_RES}
+    volumes:
+      - zknode3_data:/data
+      - zknode3_log:/datalog
+    networks:
+      bigdatacluster:
+        aliases:
+         - zknode3.bigdatacluster.com
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
+
+  nginx:
     image: nginx
-    container_name: bigdata-nginx
-    hostname: bigdata-nginx.bigdatacluster
+    container_name: nginx
+    hostname: nginx.bigdatacluster
     mem_limit: ${NGINX_MEM_LIM}
     mem_reservation: ${NGINX_MEM_RES}
     networks:
@@ -320,9 +371,33 @@ services:
        - SPARK_MASTER=spark://sparkmaster.bigdatacluster.com:7077
     env_file:
       - ./bigdata-cluster.env
-
+    
   
 volumes:
+  zknode1_data:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/zookeeper/zknode1/data
+  zknode1_log:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/zookeeper/zknode1/log
+  zknode2_data:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/zookeeper/zknode2/data
+  zknode2_log:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/zookeeper/zknode2/log
+  zknode3_data:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/zookeeper/zknode3/data
+  zknode3_log:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/zookeeper/zknode3/log 
   hadoop_namenode:
           driver: local-persist
           driver_opts:

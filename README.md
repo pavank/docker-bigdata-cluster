@@ -59,7 +59,7 @@ During launch there configurations are uploaded as Environment variables and nec
 `suod docker-compose --projectname=mybigdatacluster down`  
 
 ## Cluster Resource Management
-My Host has 16 cores core and 64GB RAM.  
+My Host has 8 cores core and 64GB RAM.  
 
 1. Memory constraints are defined in `.env` file for each container role. The docker-compose file uses this while configuring the containers.You can modify the `.env` file as per your host specifications.  
 _Note:_ Currently no resource constraints are imposed on CPU usage.  
