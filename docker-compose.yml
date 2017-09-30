@@ -5,8 +5,8 @@ services:
     image: nginx
     container_name: bigdata-nginx
     hostname: bigdata-nginx.bigdatacluster
-    mem_limit: 128m
-    mem_reservation: 64m 
+    mem_limit: ${NGINX_MEM_LIM}
+    mem_reservation: ${NGINX_MEM_RES}
     networks:
      bigdatacluster:
         aliases:
@@ -43,8 +43,8 @@ services:
     image: hadoop-namenode:0.2
     container_name: hadoop-namenode
     hostname: hadoop-namenode.bigdatacluster
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: ${HADOOP_NN_MEM_LIM}
+    mem_reservation: ${HADOOP_NN_MEM_RES}
     volumes:
       - hadoop_namenode:/hadoop/dfs/name
     networks:
@@ -60,8 +60,8 @@ services:
     image: hadoop-datanode:0.2
     container_name: hadoop-datanode1
     hostname: hadoop-datanode1.bigdatacluster
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: ${HADOOP_DN_MEM_LIM}
+    mem_reservation: ${HADOOP_DN_MEM_RES}
     depends_on:
       hadoop-namenode :
          condition: service_healthy
@@ -78,8 +78,8 @@ services:
     image: hadoop-datanode:0.2
     container_name: hadoop-datanode2
     hostname: hadoop-datanode2.bigdatacluster
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: ${HADOOP_DN_MEM_LIM}
+    mem_reservation: ${HADOOP_DN_MEM_RES}
     depends_on:
       hadoop-namenode:
          condition: service_healthy
@@ -97,8 +97,8 @@ services:
     image: hadoop-datanode:0.2
     container_name: hadoop-datanode3
     hostname: hadoop-datanode3.bigdatacluster
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: ${HADOOP_DN_MEM_LIM}
+    mem_reservation: ${HADOOP_DN_MEM_RES}
     depends_on:
       hadoop-namenode:
          condition: service_healthy
@@ -116,8 +116,8 @@ services:
     image: yarn-resourcemanager:0.2
     container_name: yarn-resourcemanager
     hostname: yarn-resourcemanager.bigdatacluster
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: ${YARN_RM_MEM_LIM}
+    mem_reservation: ${YARN_RM_MEM_RES}
     networks:
         bigdatacluster:
           aliases:
@@ -132,8 +132,8 @@ services:
     image: yarn-historyserver:0.2
     container_name: yarn-historyserver
     hostname: yarn-historyserver.bigdatacluster
-    mem_limit: 1g
-    mem_reservation: 512m
+    mem_limit: ${YARN_HS_MEM_LIM}
+    mem_reservation: ${YARN_HS_MEM_RES}
     depends_on:
       yarn-resourcemanager:
          condition: service_healthy
@@ -150,8 +150,8 @@ services:
     image: yarn-nodemanager:0.2
     container_name: yarn-nodemanager1
     hostname: yarn-nodemanager1.bigdatacluster
-    mem_limit: 4g
-    mem_reservation: 2g
+    mem_limit: ${YARN_NM_MEM_LIM}
+    mem_reservation: ${YARN_NM_MEM_RES}
     networks:
       bigdatacluster:
           aliases:
@@ -166,8 +166,8 @@ services:
     image: yarn-nodemanager:0.2
     container_name: yarn-nodemanager2
     hostname: yarn-nodemanager2.bigdatacluster
-    mem_limit: 4g
-    mem_reservation: 2g
+    mem_limit: ${YARN_NM_MEM_LIM}
+    mem_reservation: ${YARN_NM_MEM_RES}
     networks:
       bigdatacluster:
           aliases:
@@ -182,8 +182,8 @@ services:
     image: yarn-nodemanager:0.2
     container_name: yarn-nodemanager3
     hostname: yarn-nodemanager3.bigdatacluster
-    mem_limit: 4g
-    mem_reservation: 2g
+    mem_limit: ${YARN_NM_MEM_LIM}
+    mem_reservation: ${YARN_NM_MEM_RES}
     networks:
       bigdatacluster:
           aliases:
@@ -198,8 +198,8 @@ services:
     image: hive-postgres:0.2
     container_name: hive-postgres
     hostname: hive-postgres.bigdatacluster
-    mem_limit: 512m
-    mem_reservation: 256m
+    mem_limit: ${HIVE_DB_MEM_LIM}
+    mem_reservation: ${HIVE_DB_MEM_RES}
     volumes:
       - hive_postgres_pgdata:/var/lib/postgresql/data/pgdata
     networks:
@@ -211,8 +211,8 @@ services:
     image: hive-metastore:0.2
     container_name: hive-metastore
     hostname: hive-metastore.bigdatacluster
-    mem_limit: 1g
-    mem_reservation: 512m    
+    mem_limit: ${HIVE_MS_MEM_LIM}
+    mem_reservation: ${HIVE_MS_MEM_RES}
     networks:
       bigdatacluster:
         aliases:
@@ -228,8 +228,8 @@ services:
     image: hive-server:0.2
     container_name: hive-server
     hostname: hive-server.bigdatacluster 
-    mem_limit: 4g
-    mem_reservation: 2g
+    mem_limit: ${HIVE_HS_MEM_LIM}
+    mem_reservation: ${HIVE_HS_MEM_RES}
     networks:
       bigdatacluster:
         aliases:
@@ -247,8 +247,8 @@ services:
     image: spark-master:0.2
     container_name: spark-master
     hostname: spark-master.bigdatacluster
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: ${SPARK_MS_MEM_LIM}
+    mem_reservation: ${SPARK_MS_MEM_RES}
     networks:
         bigdatacluster:
           aliases:
@@ -265,8 +265,8 @@ services:
     image: spark-worker:0.2
     container_name: spark-worker1
     hostname: spark-worker1.bigdatacluster
-    mem_limit: 4g
-    mem_reservation: 2g
+    mem_limit: ${SPARK_WN_MEM_LIM}
+    mem_reservation: ${SPARK_WN_MEM_RES}
     networks:
         bigdatacluster:
           aliases:
@@ -285,8 +285,8 @@ services:
     image: spark-worker:0.2
     container_name: spark-worker2
     hostname: spark-worker2.bigdatacluster
-    mem_limit: 4g
-    mem_reservation: 2g
+    mem_limit: ${SPARK_WN_MEM_LIM}
+    mem_reservation: ${SPARK_WN_MEM_RES}
     networks:
         bigdatacluster:
           aliases:
@@ -305,8 +305,8 @@ services:
     image: spark-worker:0.2
     container_name: spark-worker3
     hostname: spark-worker3.bigdatacluster
-    mem_limit: 4g
-    mem_reservation: 2g
+    mem_limit: ${SPARK_WN_MEM_LIM}
+    mem_reservation: ${SPARK_WN_MEM_RES}
     networks:
         bigdatacluster:
           aliases:

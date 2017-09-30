@@ -59,27 +59,13 @@ During launch there configurations are uploaded as Environment variables and nec
 `suod docker-compose --projectname=mybigdatacluster down`  
 
 ## Cluster Resource Management
-My Host has 4 CPU core and 32GB RAM.
+My Host has 16 cores core and 64GB RAM.  
 
-The docker-compose file has following memory constraints set for each container.Change them as you see fit for your environment.
+1. Memory constraints are defined in `.env` file for each container role. The docker-compose file uses this while configuring the containers.You can modify the `.env` file as per your host specifications.  
+_Note:_  
+ - Currently no resource constraints are imposed on CPU usage.  
 
-Service Name | Memory Reservation | Memory Upper Limit|
------------- | ------------------ | -----------------|
-Hadoop Namenode | 1 GB | 2GB |
-Hadoop Datanodes (x3) | 1 GB | 2GB |
-YARN Resource Manager | 1 GB | 2GB |
-YARN Node Managers(x3) | 2 GB | 4GB | 
-YARN Timeline Server | 512 MB | 1GB |
-HIVE Postgres DB | 256 MB | 512 MB |
-HIVE metastore Server | 512 MB | 1 GB |
-HIVE Server | 2 GB | 4GB |
-SPARK Master | 1 GB | 2 GB | 
-SPARK Workers(x3) | 2 GB | 4 GB|
-Nginx Web Proxy| 64MB | 128 MB |
-
-_Notes:_  
-_a)_ Memory is overprovisioned here.I intend to only use either YARN or Spark (Standalone) at any given time.  
-_b)_ Currently no resource constraints are imposed on CPU usage.  
+2. If you need to reset files in mounted named volumes during cluster redeployment you can run the script `cleanup-volumes.sh`.  
 
 
 ## Cluster Administration via Web UI
