@@ -62,8 +62,7 @@ During launch there configurations are uploaded as Environment variables and nec
 My Host has 16 cores core and 64GB RAM.  
 
 1. Memory constraints are defined in `.env` file for each container role. The docker-compose file uses this while configuring the containers.You can modify the `.env` file as per your host specifications.  
-_Note:_  
- - Currently no resource constraints are imposed on CPU usage.  
+_Note:_ Currently no resource constraints are imposed on CPU usage.  
 
 2. If you need to reset files in mounted named volumes during cluster redeployment you can run the script `cleanup-volumes.sh`.  
 
