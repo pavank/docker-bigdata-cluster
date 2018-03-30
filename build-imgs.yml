@@ -1,6 +1,13 @@
 version: "2.3"
 
 services:
+ postgres:
+  build:
+    context: ./postgres
+    labels:
+      description: "Image for Postgres DB for bigdata framework"
+  image: bigdata-postgres:0.2 
+
  hadoop-base:
   build: 
     context: ./hadoop/base
@@ -62,28 +69,12 @@ services:
   links:
      - "hadoop-base"
 
- hive-postgres:
-  build:
-    context: ./hive/postgres
-    labels:
-      description: "Image for Postgres DB for hive metastore schema"
-  image: hive-postgres:0.2
-
  hive-metastore:
   build:
     context: ./hive/metastore
     labels:
       description: "Image for Hive MetaStore Server"
   image: hive-metastore:0.2
-  links:
-     - "hive-base"
-
- hive-server:
-  build:
-    context: ./hive/hive-server
-    labels:
-      description: "Image for Hive Server"
-  image: hive-server:0.2
   links:
      - "hive-base"
 

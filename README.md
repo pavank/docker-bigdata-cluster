@@ -27,7 +27,7 @@ Make sure you open the ports `8042,8080,8081,8088,8188,10002,50070,50075` on hos
     The mounts `/data1`,`/data2` is filesystem on your Host.
 
 3. Create isolated virtual network for cluster nodes.   
-    `sudo docker network create test`
+    `sudo docker network create bigdatacluster`
 
 ## Configuration
 `bigdata-cluster.env` has required hostname/FQDN configuration for cluster services to talk to each other. If you change hostnames/network alias in `docker-compose.yml` make sure you update the configurations before launching the containers 
@@ -49,14 +49,14 @@ During launch there configurations are uploaded as Environment variables and nec
 
 ### Step-2: Build the other images using a docker compose file
 -  Switch back to top level folder  
-`sudo docker-compose --file build-imgs.yml`
+`sudo docker-compose --file build-imgs.yml build`
 
 ### Step-3 : Booting up the whole cluster
 - Run the below command from top level folder
-`sudo docker-compose --project-name=mybigdatacluster up -d`
+`sudo docker-compose --project-name=devcluster up -d`
 
 - To shutdown the cluster the command is
-`suod docker-compose --projectname=mybigdatacluster down`  
+`suod docker-compose --projectname=devcluster down`  
 
 ## Cluster Resource Management
 My Host has 8 cores core and 64GB RAM.  

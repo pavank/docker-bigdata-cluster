@@ -1,6 +1,6 @@
-FROM postgres:9.6
+FROM postgres:10.3
 
-LABEL Description="This is the postgres DB  for Hive metastore schema" \
+LABEL Description="This is the postgres DB used for bigdata cluster frameworks;E.g: Hive Metastore etc.." \
       Author="Pavan Keerthi <pavan.keerthi@gmail.com>"
 
 ENV PGDATA /var/lib/postgresql/data/pgdata

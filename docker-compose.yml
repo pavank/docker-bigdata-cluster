@@ -1,6 +1,18 @@
 version: "2.3"
 
 services:
+  postgres:
+    image: bigdata-postgres:0.2
+    container_name: postgres
+    hostname: postgres.bigdatacluster
+    mem_limit: ${POSTGRES_DB_MEM_LIM}
+    mem_reservation: ${POSTGRES_DB_MEM_RES}
+    volumes:
+      - postgres_pgdata:/var/lib/postgresql/data/pgdata
+    networks:
+      bigdatacluster:
+        aliases:
+           - postgres.bigdatacluster.com
   zknode1:
     image: zookeeper
     container_name: zknode1
@@ -244,20 +256,7 @@ services:
          condition: service_healthy
     env_file:
       - ./bigdata-cluster.env
-
-  hive-postgres:
-    image: hive-postgres:0.2
-    container_name: hive-postgres
-    hostname: hive-postgres.bigdatacluster
-    mem_limit: ${HIVE_DB_MEM_LIM}
-    mem_reservation: ${HIVE_DB_MEM_RES}
-    volumes:
-      - hive_postgres_pgdata:/var/lib/postgresql/data/pgdata
-    networks:
-      bigdatacluster:
-        aliases:
-           - postgres.bigdatacluster.com 
-
+  
   hive-metastore:
     image: hive-metastore:0.2
     container_name: hive-metastore
@@ -269,7 +268,7 @@ services:
         aliases:
            - hivemetastore.bigdatacluster.com
     depends_on:
-      hive-postgres:
+      postgres:
            condition: service_healthy
     env_file:
       - ./bigdata-cluster.env
@@ -374,6 +373,10 @@ services:
     
   
 volumes:
+  postgres_pgdata:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/postgres/pgdata
   zknode1_data:
           driver: local-persist
           driver_opts:
@@ -418,10 +421,6 @@ volumes:
           driver: local-persist
           driver_opts:
                mountpoint: /data1/dockervolumes/yarn/hs
-  hive_postgres_pgdata:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/hive/postgres/pgdata
   spark_master_logs:
           driver: local-persist
           driver_opts:
