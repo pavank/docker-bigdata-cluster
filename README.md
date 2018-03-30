@@ -16,7 +16,7 @@ Make sure you open the ports `8042,8080,8081,8088,8188,10002,50070,50075` on hos
 
 2. Create folders on Host to map container volumes to host .This is where the volume mountpoints are pointed in docker-compose.yml.   
       `mkdir -p /data1/dockervolumes/hadoop/nn`  
-      `mkdir -p /data1/dockervolumes/hive/postgres/pgdata`  
+      `mkdir -p /data1/dockervolumes/postgres/pgdata`  
       `mkdir -p /data1/dockervolumes/spark/master/logs`  
       `mkdir -p /data1/dockervolumes/yarn/hs`  
       `mkdir -p /data2/dockervolumes/hadoop/dn1 /data2/dockervolumes/hadoop/dn2 /data2/dockervolumes/hadoop/dn3`  
