@@ -9,7 +9,7 @@ services:
     mem_reservation: ${POSTGRES_DB_MEM_RES}
     volumes:
       - postgres_pgdata:/var/lib/postgresql/data/pgdata
-      - ./pg_hba.conf:/etc/postgresql/${POSTGRES_VERSION}/main/
+      - ./config/pg_hba.conf:/etc/postgresql/${POSTGRES_VERSION}/main/
     networks:
       bigdatacluster:
         aliases:
@@ -98,7 +98,7 @@ services:
        - "50070:50070"
        - "50075:50075" 
     volumes:
-       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - hadoop-namenode
       - hadoop-datanode1
