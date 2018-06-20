@@ -5,6 +5,7 @@ LABEL Description="This is the postgres DB used for bigdata cluster frameworks;E
 
 ENV PGDATA /var/lib/postgresql/data/pgdata
 ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD postgres
 ENV POSTGRES_DB postgres
 
 HEALTHCHECK CMD pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1
