@@ -13,6 +13,18 @@ services:
       bigdatacluster:
         aliases:
            - postgres.bigdatacluster.com
+   redis:
+    image: redis
+    container_name: redis
+    hostname: redis.bigdatacluster
+    mem_limit: ${REDIS_MEM_LIM}
+    mem_reservation: ${REDIS_MEM_RES}
+    volumes:
+      - redis_data:/data
+    networks:
+      bigdatacluster:
+        aliases:
+           - redis.bigdatacluster.com
   zknode1:
     image: zookeeper
     container_name: zknode1
@@ -373,6 +385,10 @@ services:
     
   
 volumes:
+  redis_data:
+          drive:local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/redis/data
   postgres_pgdata:
           driver: local-persist
           driver_opts:
