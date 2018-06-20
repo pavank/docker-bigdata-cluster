@@ -16,6 +16,7 @@
 --
 -- Tables for transaction management
 -- 
+USE metastore
 
 CREATE TABLE TXNS (
   TXN_ID bigint PRIMARY KEY,
