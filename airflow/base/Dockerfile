@@ -10,8 +10,9 @@ ARG AIRFLOW_HOME=~/airflow
 
 ENV AIRFLOW_DAG=~/airflow/dags
 ENV AIRFLOW_LOG=~/airflow/logs
-	  
-	  
+
+WORKDIR ~/
+
 # Install Python Modules
 RUN python3.6 -m pip install -U setuptools
 RUN python3.6 -m pip install celery[redis]==4.1.1
@@ -19,4 +20,4 @@ RUN python3.6 -m pip install apache-airflow[async,crypto,celery,postgres,redis]=
 RUN python3.6 -m pip install psycopg2-binary
 RUN python3.6 -m pip install SQLAlchemy
 
-COPY airflow.cfg ~/airflow/airflow.cfg
+ADD airflow.cfg  ~/airflow/airflow.cfg
