@@ -19,4 +19,4 @@ RUN python3.6 -m pip install apache-airflow[async,crypto,celery,postgres,redis]=
 RUN python3.6 -m pip install psycopg2-binary
 RUN python3.6 -m pip install SQLAlchemy
 
-COPY ../../config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
+COPY airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
