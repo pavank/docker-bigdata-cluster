@@ -123,8 +123,6 @@ services:
     depends_on:
       - postgres
       - redis
-    volumes:
-      - ./config/airflow.cfg:/usr/local/airflow/airflow.cfg
     networks:
         bigdatacluster:
           aliases:
@@ -142,8 +140,6 @@ services:
     mem_reservation: ${AIRFLOW_SCH_MEM_RES}
     depends_on:
       - airflow-webui
-    volumes:
-      - ./config/airflow.cfg:/usr/local/airflow/airflow.cfg
     networks:
         bigdatacluster:
           aliases:
@@ -161,8 +157,6 @@ services:
     mem_reservation: ${AIRFLOW_WRK_MEM_RES}
     depends_on:
       - airflow-scheduler
-    volumes:
-      - ./config/airflow.cfg:/usr/local/airflow/airflow.cfg
     networks:
         bigdatacluster:
           aliases:
