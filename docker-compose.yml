@@ -9,7 +9,6 @@ services:
     mem_reservation: ${POSTGRES_DB_MEM_RES}
     volumes:
       - postgres_pgdata:/var/lib/postgresql/data/pgdata
-      - ./config/pg_hba.conf:/etc/postgresql/${POSTGRES_VERSION}/main/
     networks:
       bigdatacluster:
         aliases:
