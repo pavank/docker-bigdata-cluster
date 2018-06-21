@@ -6,4 +6,4 @@ LABEL Description="This is a Apache Airflow WebUI node" \
 	  
 EXPOSE 9090
 
-CMD [airflow initdb && airflow webserver -p 9090]
+CMD [".\startup.sh"]
