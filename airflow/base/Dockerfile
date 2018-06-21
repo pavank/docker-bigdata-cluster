@@ -7,6 +7,9 @@ LABEL Description="Base Image for Airflow Nodes" \
 # Airflow
 ARG AIRFLOW_VERSION=1.9.0
 ARG AIRFLOW_HOME=/usr/local/airflow
+
+ENV AIRFLOW_DAG=/usr/local/airflow/dags
+ENV AIRFLOW_LOG=/usr/local/airflow/logs
 	  
 	  
 # Install Python Modules
