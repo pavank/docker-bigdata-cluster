@@ -125,8 +125,6 @@ services:
       - postgres
       - redis
     volumes:
-      - airflow_dag:/usr/local/airflow/dags
-      - airflow_log:/usr/local/airflow/logs
       - ./config/airflow.cfg:/usr/local/airflow
     networks:
         bigdatacluster:
@@ -146,8 +144,6 @@ services:
     depends_on:
       - airflow-webui
     volumes:
-      - airflow_dag:/usr/local/airflow/dags
-      - airflow_log:/usr/local/airflow/logs
       - ./config/airflow.cfg:/usr/local/airflow
     networks:
         bigdatacluster:
@@ -167,8 +163,6 @@ services:
     depends_on:
       - airflow-scheduler
     volumes:
-      - airflow_dag:/usr/local/airflow/dags
-      - airflow_log:/usr/local/airflow/logs
       - ./config/airflow.cfg:/usr/local/airflow
     networks:
         bigdatacluster:
