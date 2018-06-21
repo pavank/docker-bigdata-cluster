@@ -112,9 +112,74 @@ services:
       - spark-master
       - spark-worker1
       - spark-worker2
-      - spark-worker3    
+      - spark-worker3
+      - airflow-webui      
    
+  airflow-webui:
+    image: airflow-webui:0.2
+    container_name: airflow-webui
+    hostname: airflow-webui.bigdatacluster
+    mem_limit: ${AIRFLOW_WEB_MEM_LIM}
+    mem_reservation: ${AIRFLOW_WEB_MEM_RES}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - airflow-dag:/usr/local/airflow/dags
+      - airflow-log:/usr/local/airflow/logs
+      - ./config/airflow.cfg:/usr/local/airflow
+    networks:
+        bigdatacluster:
+          aliases:
+            - airflowwebui.bigdatacluster.com
+    environment:
+      - CLUSTER_NAME=bigdatacluster
+    env_file:
+      - ./bigdata-cluster.env
 
+  airflow-scheduler:
+    image: airflow-scheduler:0.2
+    container_name: airflow-scheduler
+    hostname: airflow-scheduler.bigdatacluster
+    mem_limit: ${AIRFLOW_SCH_MEM_LIM}
+    mem_reservation: ${AIRFLOW_SCH_MEM_RES}
+    depends_on:
+      - airflow-webui
+    volumes:
+      - airflow-dag:/usr/local/airflow/dags
+      - airflow-log:/usr/local/airflow/logs
+      - ./config/airflow.cfg:/usr/local/airflow
+    networks:
+        bigdatacluster:
+          aliases:
+            - airflowscheduler.bigdatacluster.com
+    environment:
+      - CLUSTER_NAME=bigdatacluster
+    env_file:
+      - ./bigdata-cluster.env
+
+  airflow-worker1:
+    image: airflow-worker:0.2
+    container_name: airflow-worker
+    hostname: airflow-worker.bigdatacluster
+    mem_limit: ${AIRFLOW_WRK_MEM_LIM}
+    mem_reservation: ${AIRFLOW_WRK_MEM_RES}
+    depends_on:
+      - airflow-scheduler
+    volumes:
+      - airflow-dag:/usr/local/airflow/dags
+      - airflow-log:/usr/local/airflow/logs
+      - ./config/airflow.cfg:/usr/local/airflow
+    networks:
+        bigdatacluster:
+          aliases:
+            - airflowworker1.bigdatacluster.com
+    environment:
+      - CLUSTER_NAME=bigdatacluster
+    env_file:
+      - ./bigdata-cluster.env
+
+      
   hadoop-namenode:
     image: hadoop-namenode:0.2
     container_name: hadoop-namenode
@@ -394,6 +459,14 @@ volumes:
           driver: local-persist
           driver_opts:
                mountpoint: /data1/dockervolumes/postgres/pgdata
+  airflow_dag:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/airflow/dags
+  airflow_log:
+          driver: local-persist
+          driver_opts:
+               mountpoint: /data1/dockervolumes/airflow/logs               
   zknode1_data:
           driver: local-persist
           driver_opts:

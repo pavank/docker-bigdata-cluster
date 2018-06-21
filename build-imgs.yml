@@ -7,6 +7,34 @@ services:
     labels:
       description: "Image for Postgres DB for bigdata framework"
   image: bigdata-postgres:0.2 
+  
+ airflow-base:
+  build:
+    context: ./airflow/base
+    labels:
+      description: "Base image for Airflow Nodes"
+  image: airflow-base:0.2 
+  
+ airflow-webui:
+  build:
+    context: ./airflow/webui
+    labels:
+      description: "Image for Airflow WebUI for bigdata framework"
+  image: airflow-webui:0.2 
+
+ airflow-scheduler:
+  build:
+    context: ./airflow/scheduler
+    labels:
+      description: "Image for Airflow Scheduler for bigdata framework"
+  image: airflow-scheduler:0.2
+
+ airflow-worker:
+  build:
+    context: ./airflow/worker
+    labels:
+      description: "Image for Airflow Worker for bigdata framework"
+  image: airflow-worker :0.2   
 
  hadoop-base:
   build: 
