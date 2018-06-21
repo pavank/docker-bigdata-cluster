@@ -34,7 +34,7 @@ services:
     context: ./airflow/worker
     labels:
       description: "Image for Airflow Worker for bigdata framework"
-  image: airflow-worker :0.2   
+  image: airflow-worker:0.2   
 
  hadoop-base:
   build: 
