@@ -3,4 +3,4 @@
 mkdir -p $AIRFLOW_DAG
 mkdir -p $AIRFLOW_LOG
 
-airflow webserver
+airflow initdb && airflow webserver
