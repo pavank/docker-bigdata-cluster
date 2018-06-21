@@ -8,8 +8,6 @@ LABEL Description="Base Image for Airflow Nodes" \
 ARG AIRFLOW_VERSION=1.9.0
 ARG AIRFLOW_HOME=/usr/local/airflow
 	  
-#Install Drivers
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends hive-jdbc
 	  
 # Install Python Modules
 RUN python3.6 -m pip install celery[redis]==4.1.1
