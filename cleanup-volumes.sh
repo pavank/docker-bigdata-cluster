@@ -6,6 +6,9 @@ sudo rm -rf /data1/dockervolumes/hadoop/nn/*
 sudo rm -rf /data1/dockervolumes/hive/postgres/pgdata/*
 sudo rm -rf /data1/dockervolumes/spark/master/logs/*
 sudo rm -rf /data1/dockervolumes/yarn/hs/*
+sudo rm -rf /data1/dockervolumes/redis/data/*  
+sudo rm -rf /data1/dockervolumes/airflow/dags/*  
+sudo rm -rf /data1/dockervolumes/airflow/logs/*   
 
 sudo rm -rf /data2/dockervolumes/hadoop/dn1/*
 sudo rm -rf /data2/dockervolumes/hadoop/dn2/*
