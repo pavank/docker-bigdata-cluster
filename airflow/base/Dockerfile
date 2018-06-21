@@ -6,12 +6,11 @@ LABEL Description="Base Image for Airflow Nodes" \
 	  
 # Airflow
 ARG AIRFLOW_VERSION=1.9.0
-ARG AIRFLOW_HOME=~/airflow
+ARG AIRFLOW_HOME=/root/airflow
 
-ENV AIRFLOW_DAG=~/airflow/dags
-ENV AIRFLOW_LOG=~/airflow/logs
+ENV AIRFLOW_DAG=/root/airflow/dags
+ENV AIRFLOW_LOG=/root/airflow/logs
 
-WORKDIR ~/
 
 # Install Python Modules
 RUN python3.6 -m pip install -U setuptools
@@ -20,4 +19,4 @@ RUN python3.6 -m pip install apache-airflow[async,crypto,celery,postgres,redis]=
 RUN python3.6 -m pip install psycopg2-binary
 RUN python3.6 -m pip install SQLAlchemy
 
-ADD airflow.cfg  ~/airflow/airflow.cfg
+COPY airflow.cfg  /root/airflow/airflow.cfg
