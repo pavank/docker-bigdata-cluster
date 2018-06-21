@@ -1,2 +1,2 @@
 #!/bin/bash
-airflow webserver
+airflow initdb && airflow webserver -p 9090
