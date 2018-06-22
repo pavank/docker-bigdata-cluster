@@ -26,7 +26,7 @@ services:
         aliases:
           - redis.bigdatacluster.com
     healthcheck:
-      test: ["CMD-SHELL", "netstat -tuplen | grep 8793 || exit 1"]
+      test: ["CMD-SHELL", "netstat -tuplen | grep 6379 || exit 1"]
   zknode1:
     image: zookeeper
     container_name: zknode1
