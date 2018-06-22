@@ -14,4 +14,4 @@ mkdir -p $AIRFLOW_LOG
 
 exec airflow initdb 
 sleep 10
-exec airflow webserver
+exec airflow webserver -d -p 9090
