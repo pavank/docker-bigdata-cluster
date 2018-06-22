@@ -12,5 +12,6 @@ touch already_ran
 mkdir -p $AIRFLOW_DAG
 mkdir -p $AIRFLOW_LOG
 
-#airflow initdb 
+airflow initdb 
+sleep 20
 airflow webserver
