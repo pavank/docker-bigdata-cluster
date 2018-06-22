@@ -8,8 +8,8 @@ LABEL Description="Base Image for Airflow Nodes" \
 ARG AIRFLOW_VERSION=1.9.0
 ARG AIRFLOW_HOME=/root/airflow
 
-ENV AIRFLOW_DAG=/root/airflow/dags
-ENV AIRFLOW_LOG=/root/airflow/logs
+ENV AIRFLOW_DAG=${AIRFLOW_HOME}/dags
+ENV AIRFLOW_LOG=${AIRFLOW_HOME}/logs
 
 
 # Install Python Modules
@@ -25,4 +25,5 @@ RUN useradd -s /bin/bash -g root -G sudo -p airflow airflow
 
 
 #Config
-COPY airflow.cfg  /root/airflow/airflow.cfg
+WORKDIR ${AIRFLOW_HOME}
+COPY airflow.cfg  ${AIRFLOW_HOME}/airflow.cfg
