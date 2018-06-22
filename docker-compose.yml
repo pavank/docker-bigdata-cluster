@@ -117,7 +117,7 @@ services:
       - spark-worker2
       - spark-worker3
       - airflow-webui
-      - airflow-worker      
+      - airflow-worker1      
    
   airflow-webui:
     image: airflow-webui:0.2
