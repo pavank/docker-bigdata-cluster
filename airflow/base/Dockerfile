@@ -6,8 +6,8 @@ LABEL Description="Base Image for Airflow Nodes" \
 	  
 # Airflow Config
 ARG AIRFLOW_VERSION=1.9.0
-ARG AIRFLOW_HOME=/usr/local/airflow
 
+ENV AIRFLOW_HOME=/usr/local/airflow
 ENV AIRFLOW_DAG=${AIRFLOW_HOME}/dags
 ENV AIRFLOW_LOG=${AIRFLOW_HOME}/logs
 
