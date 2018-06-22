@@ -12,5 +12,4 @@ touch already_ran
 mkdir -p $AIRFLOW_DAG
 mkdir -p $AIRFLOW_LOG
 
-airflow initdb 
-exec airflow webserver -d -p 9090
+airflow initdb && airflow webserver
