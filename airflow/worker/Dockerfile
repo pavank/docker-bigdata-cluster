@@ -6,4 +6,6 @@ LABEL Description="This is a Apache Airflow Scheduler node" \
 COPY startup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/startup.sh
 
+HEALTHCHECK CMD netstat -tuplen | grep 8793 || exit 1
+
 CMD startup.sh

@@ -8,4 +8,6 @@ RUN chmod +x /usr/local/bin/startup.sh
 
 EXPOSE 9090
 
+HEALTHCHECK CMD netstat -tuplen | grep 9090 || exit 1
+
 CMD startup.sh
