@@ -8,6 +8,9 @@ RUN chmod +x /usr/local/bin/startup.sh
 
 EXPOSE 9090
 
-HEALTHCHECK CMD netstat -tuplen | grep 9090 || exit 1
+HEALTHCHECK --start-period=10s CMD netstat -tuplen | grep 9090 || exit 1
+
+USER airflow
+WORKDIR ${AIRFLOW_HOME}
 
 CMD startup.sh

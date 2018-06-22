@@ -4,9 +4,9 @@ LABEL Description="Base Image for Airflow Nodes" \
       Author="Pavan Keerthi <pavan.keerthi@gmail.com>"
 
 	  
-# Airflow
+# Airflow Config
 ARG AIRFLOW_VERSION=1.9.0
-ARG AIRFLOW_HOME=/root/airflow
+ARG AIRFLOW_HOME=/usr/local/airflow
 
 ENV AIRFLOW_DAG=${AIRFLOW_HOME}/dags
 ENV AIRFLOW_LOG=${AIRFLOW_HOME}/logs
@@ -20,10 +20,7 @@ RUN python3.6 -m pip install psycopg2-binary
 RUN python3.6 -m pip install SQLAlchemy
 
 
-#Create airflow Linux User
-RUN useradd -s /bin/bash -g root -G sudo -p airflow airflow
-
-
-#Config
-WORKDIR ${AIRFLOW_HOME}
+#Airflow Setup
+RUN useradd -ms /bin/bash -d ${AIRFLOW_HOME} airflow
 COPY airflow.cfg  ${AIRFLOW_HOME}/airflow.cfg
+RUN chown -R airflow: ${AIRFLOW_HOME}
