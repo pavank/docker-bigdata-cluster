@@ -156,7 +156,7 @@ services:
 
   airflow-worker1:
     image: airflow-worker:0.2
-    container_name: airflow-worker
+    container_name: airflow-worker1
     hostname: airflow-worker.bigdatacluster
     mem_limit: ${AIRFLOW_WRK_MEM_LIM}
     mem_reservation: ${AIRFLOW_WRK_MEM_RES}
