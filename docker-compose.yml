@@ -95,6 +95,8 @@ services:
        - "8081:8081"
        - "8088:8088" 
        - "8188:8188"
+       - "8793:8793" 
+       - "9090:9090" 
        - "10002:10002" 
        - "50070:50070"
        - "50075:50075" 
@@ -114,7 +116,8 @@ services:
       - spark-worker1
       - spark-worker2
       - spark-worker3
-      - airflow-webui      
+      - airflow-webui
+      - airflow-worker      
    
   airflow-webui:
     image: airflow-webui:0.2
