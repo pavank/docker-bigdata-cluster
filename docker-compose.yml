@@ -41,7 +41,9 @@ services:
         aliases:
          - zknode1.bigdatacluster.com
     ports:
-      - 2181:2181
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
     environment:
        ZOO_MY_ID: 1
        ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
@@ -62,7 +64,9 @@ services:
         aliases:
          - zknode2.bigdatacluster.com
     ports:
-      - 2182:2181
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
     environment:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
@@ -83,7 +87,9 @@ services:
         aliases:
          - zknode3.bigdatacluster.com
     ports:
-      - 2183:2181
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
