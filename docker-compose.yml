@@ -25,6 +25,7 @@ services:
       bigdatacluster:
         aliases:
           - redis.bigdatacluster.com
+    command: redis-server
 
   zknode1:
     image: zookeeper
