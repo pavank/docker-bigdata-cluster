@@ -125,9 +125,14 @@ services:
     hostname: airflow-webui.bigdatacluster
     mem_limit: ${AIRFLOW_WEB_MEM_LIM}
     mem_reservation: ${AIRFLOW_WEB_MEM_RES}
+    volumes:
+      - airflow_dag:/usr/local/airflow/dags
+      - airflow_log:/usr/local/airflow/logs
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
         bigdatacluster:
           aliases:
@@ -143,8 +148,12 @@ services:
     hostname: airflow-scheduler.bigdatacluster
     mem_limit: ${AIRFLOW_SCH_MEM_LIM}
     mem_reservation: ${AIRFLOW_SCH_MEM_RES}
+    volumes:
+      - airflow_dag:/usr/local/airflow/dags
+      - airflow_log:/usr/local/airflow/logs
     depends_on:
-      - airflow-webui
+      airflow-webui:
+        condition: service_healthy
     networks:
         bigdatacluster:
           aliases:
@@ -160,8 +169,12 @@ services:
     hostname: airflow-worker.bigdatacluster
     mem_limit: ${AIRFLOW_WRK_MEM_LIM}
     mem_reservation: ${AIRFLOW_WRK_MEM_RES}
+    volumes:
+      - airflow_dag:/usr/local/airflow/dags
+      - airflow_log:/usr/local/airflow/logs
     depends_on:
-      - airflow-scheduler
+      airflow-scheduler:
+        condition: service_healthy
     networks:
         bigdatacluster:
           aliases:
