@@ -47,10 +47,6 @@ services:
        ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
     healthcheck:
       test: ["CMD", "[ $$(echo ruok | nc 127.0.0.1:2181) == 'imok' ] || exit 1"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   zknode2:
     image: zookeeper
@@ -72,10 +68,6 @@ services:
       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
     healthcheck:
       test: ["CMD", "[ $$(echo ruok | nc 127.0.0.1:2181) == 'imok' ] || exit 1"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   zknode3:
     image: zookeeper
@@ -97,10 +89,6 @@ services:
       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
     healthcheck:
       test: ["CMD", "[ $$(echo ruok | nc 127.0.0.1:2181) == 'imok' ] || exit 1"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   nginx:
     image: nginx
