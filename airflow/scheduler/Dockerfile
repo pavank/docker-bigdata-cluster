@@ -8,7 +8,7 @@ RUN chmod +x /usr/local/bin/startup.sh
 
 HEALTHCHECK --start-period=10s CMD [ -f /usr/local/airflow/airflow.cfg ]
 
-USER airflow
+#USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
 CMD startup.sh

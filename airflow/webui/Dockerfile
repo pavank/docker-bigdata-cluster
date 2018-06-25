@@ -10,7 +10,7 @@ EXPOSE 9090
 
 HEALTHCHECK --start-period=10s CMD netstat -tuplen | grep 9090 || exit 1
 
-USER airflow
+#USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
 CMD startup.sh

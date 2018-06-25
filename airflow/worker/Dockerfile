@@ -8,7 +8,7 @@ RUN chmod +x /usr/local/bin/startup.sh
 
 HEALTHCHECK --start-period=10s CMD netstat -tuplen | grep 8793 || exit 1
 
-USER airflow
+#USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
 CMD startup.sh
