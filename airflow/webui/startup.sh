@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -e
 
 # Run once, hold otherwise
 if [ -f "already_ran" ]; then
@@ -13,13 +13,4 @@ touch already_ran
 mkdir -p $AIRFLOW_DAG
 mkdir -p $AIRFLOW_LOG
 
-if [ "$1" = "webserver" ]; then
-    sleep 10
-    echo "Initializing airflow db" 
-    airflow initdb
-    echo "sleep for 10 secs"
-    sleep 10
-    echo "Initializing airflow webserver"
-    airflow webserver
-fi
-exec "$@"
+airflow initdb && airflow webserver
