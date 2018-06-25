@@ -7,6 +7,13 @@ services:
     labels:
       description: "Image for Postgres DB for bigdata framework"
   image: bigdata-postgres:0.2 
+
+  redis:
+    build:
+      context: ./redis
+      labels:
+        description: "Iamge for Redis DB for bigdata framework"
+    image: bigdata-redis:0.2
   
  airflow-base:
   build:

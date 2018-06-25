@@ -14,7 +14,7 @@ services:
         aliases:
            - postgres.bigdatacluster.com
   redis:
-    image: redis
+    image: bigdata-redis:0.2
     container_name: redis
     hostname: redis.bigdatacluster
     mem_limit: ${REDIS_MEM_LIM}
