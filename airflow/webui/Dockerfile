@@ -13,4 +13,5 @@ EXPOSE 9090
 USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
-CMD startup.sh
+ENTRYPOINT ["/usr/local/bin//startup.sh"]
+CMD ["webserver"]

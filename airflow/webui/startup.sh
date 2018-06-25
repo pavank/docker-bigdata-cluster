@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 
 # Run once, hold otherwise
 if [ -f "already_ran" ]; then
@@ -13,4 +13,7 @@ touch already_ran
 mkdir -p $AIRFLOW_DAG
 mkdir -p $AIRFLOW_LOG
 
-airflow initdb && airflow webserver
+if [ "$1" = 'webserver' ]; then
+    airflow initdb && airflow webserver
+fi
+exec "$@"
