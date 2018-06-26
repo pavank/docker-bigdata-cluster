@@ -179,9 +179,7 @@ services:
        - "8080:8080"
        - "8081:8081"
        - "8088:8088" 
-       - "8188:8188"
-       - "8793:8793" 
-       - "9090:9090" 
+       - "8188:8188" 
        - "10002:10002" 
        - "50070:50070"
        - "50075:50075" 
@@ -222,6 +220,8 @@ services:
         bigdatacluster:
           aliases:
             - airflowwebui.bigdatacluster.com
+    ports:
+      - "9090:9090"
     environment:
       - CLUSTER_NAME=bigdatacluster
     env_file:
@@ -248,11 +248,12 @@ services:
       - CLUSTER_NAME=bigdatacluster
     env_file:
       - ./bigdata-cluster.env
+    command: scheduler
 
   airflow-worker1:
     image: airflow-worker:0.2
     container_name: airflow-worker1
-    hostname: airflow-worker.bigdatacluster
+    hostname: airflow-worker1.bigdatacluster
     mem_limit: ${AIRFLOW_WRK_MEM_LIM}
     mem_reservation: ${AIRFLOW_WRK_MEM_RES}
     volumes:
@@ -265,10 +266,13 @@ services:
         bigdatacluster:
           aliases:
             - airflowworker1.bigdatacluster.com
+    ports:
+      - "8793:8793"
     environment:
       - CLUSTER_NAME=bigdatacluster
     env_file:
       - ./bigdata-cluster.env
+    command: worker
 
       
   hadoop-namenode:
