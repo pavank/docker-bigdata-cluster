@@ -117,6 +117,50 @@ services:
       KAFKA_PORT: 9092
       ZOOKEEPER_CONNECT: zknode1.bigdatacluster:2181,zknode2.bigdatacluster:2181,zknode3.bigdatacluster:2181
       BROKER_ID: 0
+
+  kafka2:
+    image: bigdata-kafka:0.2
+    container_name: kafka2
+    hostname: kafka2.bigdatacluster
+    mem_limit: ${KAFKA_MEM_LIM}
+    mem_reservation: ${KAFKA_MEM_RES}
+    networks:
+      bigdatacluster:
+        aliases:
+         - kafka2.bigdatacluster.com
+    ports:
+      - "9093:9092"
+    depends_on:
+      - zknode1
+      - zknode2
+      - zknode3
+    environment:
+      KAFKA_HOST: kafka2.bigdatacluster
+      KAFKA_PORT: 9092
+      ZOOKEEPER_CONNECT: zknode1.bigdatacluster:2181,zknode2.bigdatacluster:2181,zknode3.bigdatacluster:2181
+      BROKER_ID: 1
+
+  kafka3:
+    image: bigdata-kafka:0.2
+    container_name: kafka3
+    hostname: kafka3.bigdatacluster
+    mem_limit: ${KAFKA_MEM_LIM}
+    mem_reservation: ${KAFKA_MEM_RES}
+    networks:
+      bigdatacluster:
+        aliases:
+         - kafka3.bigdatacluster.com
+    ports:
+      - "9094:9092"
+    depends_on:
+      - zknode1
+      - zknode2
+      - zknode3
+    environment:
+      KAFKA_HOST: kafka3.bigdatacluster
+      KAFKA_PORT: 9092
+      ZOOKEEPER_CONNECT: zknode1.bigdatacluster:2181,zknode2.bigdatacluster:2181,zknode3.bigdatacluster:2181
+      BROKER_ID: 2
  
 
   nginx:
