@@ -28,6 +28,8 @@ services:
     labels:
       description: "Image for Airflow WebUI for bigdata framework"
   image: airflow-webui:0.2 
+  links:
+     - "airflow-base"
 
  airflow-scheduler:
   build:
@@ -35,6 +37,8 @@ services:
     labels:
       description: "Image for Airflow Scheduler for bigdata framework"
   image: airflow-scheduler:0.2
+  links:
+     - "airflow-base"
 
  airflow-worker:
   build:
@@ -42,6 +46,8 @@ services:
     labels:
       description: "Image for Airflow Worker for bigdata framework"
   image: airflow-worker:0.2   
+  links:
+     - "airflow-base"
 
  hadoop-base:
   build: 
@@ -138,3 +144,9 @@ services:
   links:
      - "spark-base"
 
+ kafka:
+  build:
+    context: ./kafka
+    labels:
+      description: "Kafka Node"
+  image: bigdata-kafka:0.2
