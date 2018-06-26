@@ -96,6 +96,29 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
 
+    kafka1:
+    image: bigdata-kafka:0.2
+    container_name: kafka1
+    hostname: kafka1.bigdatacluster
+    mem_limit: ${KAFKA_MEM_LIM}
+    mem_reservation: ${KAFKA_MEM_RES}
+    networks:
+      bigdatacluster:
+        aliases:
+         - kafka1.bigdatacluster.com
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zknode1
+      - zknode2
+      - zknode1
+    environment:
+      KAFKA_HOST: kafka1.bigdatacluster
+      KAFKA_PORT: 9092
+      ZOOKEEPER_CONNECT: zknode1.bigdatacluster:2181,zknode2.bigdatacluster:2181,zknode3.bigdatacluster:2181
+      BROKER_ID: 0
+ 
+
   nginx:
     image: nginx
     container_name: nginx
