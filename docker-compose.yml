@@ -96,7 +96,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
 
-    kafka1:
+  kafka1:
     image: bigdata-kafka:0.2
     container_name: kafka1
     hostname: kafka1.bigdatacluster
