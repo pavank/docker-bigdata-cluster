@@ -7,7 +7,7 @@ _E.g:_ My Docker Host is a Ubuntu 16.04 LTS VM on [Microsoft Azure](https://port
 ## Firwall Configuration
 If your Docker Host is a UI less server like mine it doesn't have a browser.You will have to configure a public IP/DNS address to access any web url's mapped to host ports from docker containers.
 
-Make sure you open the ports `8042,8080,8081,8088,8188,8793,9090,10002,50070,50075` on host firewall so those url's are accessible. 
+Make sure you open the ports `2181-2183,2888-2890,3888-2890,8042,8080,8081,8088,8188,8793,9090,9092-9094,10002,50070,50075` on host firewall so those url's are accessible. 
 
 ## Prerequisites
 1. Install the following software
