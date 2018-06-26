@@ -226,7 +226,7 @@ services:
       - CLUSTER_NAME=bigdatacluster
     env_file:
       - ./bigdata-cluster.env
-    command: webserver -p 9090
+    command: webserver
 
   airflow-scheduler:
     image: airflow-scheduler:0.2
