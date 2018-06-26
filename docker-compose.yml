@@ -48,7 +48,7 @@ services:
        ZOO_MY_ID: 1
        ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
     healthcheck:
-      test: ["CMD", "netstat -tuplen | grep 2181 || exit 1"]
+      test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
 
   zknode2:
     image: zookeeper
@@ -71,7 +71,7 @@ services:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
     healthcheck:
-      test: ["CMD", "netstat -tuplen | grep 2181 || exit 1"]
+      test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
 
   zknode3:
     image: zookeeper
@@ -94,7 +94,7 @@ services:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
     healthcheck:
-      test: ["CMD", "netstat -tuplen | grep 2181 || exit 1"]
+      test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
 
   nginx:
     image: nginx
