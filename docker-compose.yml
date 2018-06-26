@@ -111,7 +111,7 @@ services:
     depends_on:
       - zknode1
       - zknode2
-      - zknode1
+      - zknode3
     environment:
       KAFKA_HOST: kafka1.bigdatacluster
       KAFKA_PORT: 9092
