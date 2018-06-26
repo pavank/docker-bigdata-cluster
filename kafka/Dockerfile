@@ -17,4 +17,6 @@ RUN chmod +x /usr/bin/start-kafka.sh
 
 EXPOSE 9092
 
+HEALTHCHECK --start-period=10s CMD netstat -tuplen | grep 9092 || exit 1
+
 ENTRYPOINT ["/usr/bin/start-kafka.sh"]
