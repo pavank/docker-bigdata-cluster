@@ -442,8 +442,6 @@ services:
           condition: service_healthy
     env_file:
       - ./bigdata-cluster.env
-    ports:
-      - "10000:10000"
 
 
   spark-master:
