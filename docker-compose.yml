@@ -220,8 +220,6 @@ services:
         bigdatacluster:
           aliases:
             - airflowwebui.bigdatacluster.com
-    ports:
-      - "9090:9090"
     environment:
       - CLUSTER_NAME=bigdatacluster
     env_file:
@@ -266,8 +264,6 @@ services:
         bigdatacluster:
           aliases:
             - airflowworker1.bigdatacluster.com
-    ports:
-      - "8793:8793"
     environment:
       - CLUSTER_NAME=bigdatacluster
     env_file:

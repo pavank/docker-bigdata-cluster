@@ -6,7 +6,7 @@ mkdir -p $AIRFLOW_LOG
 case "$1" in
   webserver)
     airflow initdb
-    exec airflow webserver -p 9090
+    exec airflow webserver
     ;;
   worker|scheduler)
     # To give the webserver time to run initdb.
