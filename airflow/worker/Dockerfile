@@ -11,4 +11,4 @@ HEALTHCHECK --start-period=10s CMD netstat -tuplen | grep 8793 || exit 1
 #USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
-ENTRYPOINT ["/usr/local/bin/startup.sh"]]
+ENTRYPOINT ["/usr/local/bin/startup.sh"]

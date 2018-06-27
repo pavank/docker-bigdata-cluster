@@ -11,4 +11,4 @@ HEALTHCHECK --start-period=10s CMD [ -f ${AIRFLOW_HOME}/airflow.cfg ] || exit 1
 #USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
-ENTRYPOINT ["/usr/local/bin/startup.sh"]]
+ENTRYPOINT ["/usr/local/bin/startup.sh"]
