@@ -208,6 +208,7 @@ services:
       - CLUSTER_NAME=bigdatacluster
     env_file:
       - ./bigdata-cluster.env
+    user: 1000
     command: webserver
 
   airflow-scheduler:
@@ -230,6 +231,7 @@ services:
       - CLUSTER_NAME=bigdatacluster
     env_file:
       - ./bigdata-cluster.env
+    user: 1000
     command: scheduler
 
   airflow-worker1:
@@ -252,6 +254,7 @@ services:
       - CLUSTER_NAME=bigdatacluster
     env_file:
       - ./bigdata-cluster.env
+    user: 1000
     command: worker
 
       

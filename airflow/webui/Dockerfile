@@ -10,7 +10,7 @@ EXPOSE 9090
 
 HEALTHCHECK --start-period=10s CMD [ -f ${AIRFLOW_HOME}/airflow-webserver.pid ] || exit 1
 
-#USER airflow
+USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
 ENTRYPOINT ["/usr/local/bin/startup.sh"]
