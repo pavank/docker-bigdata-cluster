@@ -3,6 +3,9 @@
 mkdir -p $AIRFLOW_DAG
 mkdir -p $AIRFLOW_LOG
 
+RUN chown -R airflow:airflow $AIRFLOW_DAG
+RUN chown -R airflow:airflow $AIRFLOW_LOG
+
 case "$1" in
   webserver)
     airflow initdb
