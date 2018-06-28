@@ -3,8 +3,8 @@
 mkdir -p $AIRFLOW_DAG
 mkdir -p $AIRFLOW_LOG
 
-chown -R airflow:airflow $AIRFLOW_DAG
-chown -R airflow:airflow $AIRFLOW_LOG
+#chown -R airflow:airflow $AIRFLOW_DAG
+#chown -R airflow:airflow $AIRFLOW_LOG
 
 case "$1" in
   webserver)
