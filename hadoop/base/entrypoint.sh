@@ -19,7 +19,7 @@ function configure() {
    for c in `printenv | grep "^$3.*"`
    do
       echo " Found env $c"
-      env_name=${c%=*}
+      env_name=${c%%=*}
       env_value=${c#*=}
       config_name=${env_name#$3_}
       config_value=$env_value

@@ -1,3 +1,6 @@
+#Ignore Secrets file
+secrets.env
+
 #Ignore log files
 *.log
 vscode.code-workspace

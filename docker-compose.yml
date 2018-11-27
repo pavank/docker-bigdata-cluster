@@ -14,10 +14,9 @@ services:
             - namenode.bigdatacluster.com
     environment:
       - CLUSTER_NAME=wasbhadoopcluster
-      - CORE_CONF_fs_defaultFS  
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env  
 
   hadoop-datanode1:
     image: hadoop-datanode:0.3
@@ -34,11 +33,9 @@ services:
         bigdatacluster:
           aliases:
             - datanode1.bigdatacluster.com
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env 
 
   hadoop-datanode2:
     image: hadoop-datanode:0.3
@@ -55,11 +52,9 @@ services:
         bigdatacluster:
           aliases:
             - datanode2.bigdatacluster.com
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env
 
 
   hadoop-datanode3:
@@ -77,11 +72,9 @@ services:
         bigdatacluster:
           aliases:
             - datanode3.bigdatacluster.com
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env
 
   yarn-resourcemanager:
     image: yarn-resourcemanager:0.3
@@ -96,11 +89,9 @@ services:
     depends_on:
       hadoop-namenode:
          condition: service_healthy
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env
   
   yarn-historyserver:
     image: yarn-historyserver:0.3
@@ -117,11 +108,9 @@ services:
         bigdatacluster:
           aliases:
             - historyserver.bigdatacluster.com
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env 
   
   yarn-nodemanager1:
     image: yarn-nodemanager:0.3
@@ -136,11 +125,9 @@ services:
     depends_on:
       yarn-resourcemanager:
          condition: service_healthy
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env
 
   yarn-nodemanager2:
     image: yarn-nodemanager:0.3
@@ -155,11 +142,9 @@ services:
     depends_on:
       yarn-resourcemanager:
          condition: service_healthy
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env
 
   yarn-nodemanager3:
     image: yarn-nodemanager:0.3
@@ -174,11 +159,9 @@ services:
     depends_on:
       yarn-resourcemanager:
          condition: service_healthy
-    environment:
-      - CORE_CONF_fs_defaultFS
-      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
+      - ./secrets.env  
    
 volumes:
   hadoop_namenode:
