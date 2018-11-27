@@ -1,5 +1,5 @@
-FROM ubuntu:16.04
-LABEL Description="This is a base image for BigData Cluster Nodes" \
+FROM ubuntu:18.04
+LABEL Description="Base Ubuntu 18.04 image for BigData Cluster Nodes" \
       Author="Pavan Keerthi <pavan.keerthi@gmail.com>"
 
 
@@ -21,14 +21,14 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 
-RUN add-apt-repository ppa:jonathonf/python-3.6
+RUN add-apt-repository ppa:jonathonf/python-3.7
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-	python3.6 \
-	python3.6-dev \
+	python3.7 \
+	python3.7-dev \
 	python3-pip \
-	python3.6-venv
+	python3.7-venv
 
 
 # update pip
-RUN python3.6 -m pip install pip --upgrade
-RUN python3.6 -m pip install wheel
+RUN python3.7 -m pip install pip --upgrade
+RUN python3.7 -m pip install wheel
