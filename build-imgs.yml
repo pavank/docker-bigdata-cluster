@@ -1,67 +1,19 @@
 version: "2.3"
 
 services:
- postgres:
-  build:
-    context: ./postgres
-    labels:
-      description: "Image for Postgres DB for bigdata framework"
-  image: bigdata-postgres:0.2 
-
- redis:
-    build:
-      context: ./redis
-      labels:
-        description: "Iamge for Redis DB for bigdata framework"
-    image: bigdata-redis:0.2
-  
- airflow-base:
-  build:
-    context: ./airflow/base
-    labels:
-      description: "Base image for Airflow Nodes"
-  image: airflow-base:0.2 
-  
- airflow-webui:
-  build:
-    context: ./airflow/webui
-    labels:
-      description: "Image for Airflow WebUI for bigdata framework"
-  image: airflow-webui:0.2 
-  links:
-     - "airflow-base"
-
- airflow-scheduler:
-  build:
-    context: ./airflow/scheduler
-    labels:
-      description: "Image for Airflow Scheduler for bigdata framework"
-  image: airflow-scheduler:0.2
-  links:
-     - "airflow-base"
-
- airflow-worker:
-  build:
-    context: ./airflow/worker
-    labels:
-      description: "Image for Airflow Worker for bigdata framework"
-  image: airflow-worker:0.2   
-  links:
-     - "airflow-base"
-
  hadoop-base:
   build: 
     context: ./hadoop/base
     labels:
       description: "Base Image for Hadoop Nodes"
-  image: hadoop-base:0.2 
+  image: hadoop-base:0.3 
 
  hadoop-namenode:
   build:
     context: ./hadoop/namenode
     labels:
       description: "Image for Hadoop NameNode"
-  image: hadoop-namenode:0.2
+  image: hadoop-namenode:0.3
   links:
      - "hadoop-base"
 
@@ -70,7 +22,7 @@ services:
     context: ./hadoop/datanode
     labels:
       description: "Image for Hadoop DataNode"
-  image: hadoop-datanode:0.2
+  image: hadoop-datanode:0.3
   links:
      - "hadoop-base"
 
@@ -79,7 +31,7 @@ services:
     context: ./hadoop/nodemanager
     labels:
       description: "Image for Hadoop Node Manager"
-  image: yarn-nodemanager:0.2
+  image: yarn-nodemanager:0.3
   links:
      - "hadoop-base"
 
@@ -88,7 +40,7 @@ services:
     context: ./hadoop/resourcemanager
     labels:
       description: "Image for Yarn Resource Manager"
-  image: yarn-resourcemanager:0.2
+  image: yarn-resourcemanager:0.3
   links:
      - "hadoop-base"
 
@@ -97,56 +49,6 @@ services:
     context: ./hadoop/historyserver
     labels:
       description: "Image for Yarn timeline Server"
-  image: yarn-historyserver:0.2
+  image: yarn-historyserver:0.3
   links:
      - "hadoop-base"
-
- hive-base:
-  build:
-    context: ./hive/base
-    labels:
-      description: "Base Image for Hive Nodes"
-  image: hive-base:0.2
-  links:
-     - "hadoop-base"
-
- hive-metastore:
-  build:
-    context: ./hive/metastore
-    labels:
-      description: "Image for Hive MetaStore Server"
-  image: hive-metastore:0.2
-  links:
-     - "hive-base"
-
- spark-base:
-  build:
-     context: ./spark/base
-     labels:
-       description: "Base image for Spark"
-  image: spark-base:0.2
-
- spark-master:
-  build:
-    context: ./spark/master
-    labels:
-      description: "Spark master Node"
-  image: spark-master:0.2
-  links:
-     - "spark-base"
-
- spark-worker:
-  build:
-    context: ./spark/worker
-    labels:
-      description: "Spark Worker Node"
-  image: spark-worker:0.2
-  links:
-     - "spark-base"
-
- kafka:
-  build:
-    context: ./kafka
-    labels:
-      description: "Kafka Node"
-  image: bigdata-kafka:0.2
