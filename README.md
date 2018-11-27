@@ -56,7 +56,7 @@ During launch there configurations are uploaded as Environment variables and nec
 - Run the below command from top level folder
   `sudo docker-compose --project-name=devcluster up -d`
 - To shutdown the cluster the command is
-  `sudo docker-compose --projectname=devcluster down`  
+  `sudo docker-compose --project-name=devcluster down`  
 
 ## Cluster Resource Management
 
