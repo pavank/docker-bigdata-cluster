@@ -1,4 +1,4 @@
-FROM  hadoop-base:0.2
+FROM  hadoop-base:0.3
 
 LABEL Description="This is NodeManager for Hadoop Cluster" \
       Author="Pavan Keerthi <pavan.keerthi@gmail.com>"
