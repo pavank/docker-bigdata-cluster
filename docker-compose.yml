@@ -1,265 +1,7 @@
 version: "2.3"
-
-services:
-  postgres:
-    image: bigdata-postgres:0.2
-    container_name: postgres
-    hostname: postgres.bigdatacluster
-    mem_limit: ${POSTGRES_DB_MEM_LIM}
-    mem_reservation: ${POSTGRES_DB_MEM_RES}
-    volumes:
-      - postgres_pgdata:/var/lib/postgresql/data/pgdata
-    networks:
-      bigdatacluster:
-        aliases:
-           - postgres.bigdatacluster.com
-  redis:
-    image: bigdata-redis:0.2
-    container_name: redis
-    hostname: redis.bigdatacluster
-    mem_limit: ${REDIS_MEM_LIM}
-    mem_reservation: ${REDIS_MEM_RES}
-    volumes:
-      - redis_data:/data
-    networks:
-      bigdatacluster:
-        aliases:
-          - redis.bigdatacluster.com
-    command: redis-server
-
-  zknode1:
-    image: zookeeper
-    container_name: zknode1
-    hostname: zknode1.bigdatacluster
-    mem_limit: ${ZOOKEEPER_MEM_LIM}
-    mem_reservation: ${ZOOKEEPER_MEM_RES}
-    volumes:
-      - zknode1_data:/data
-      - zknode1_log:/datalog
-    networks:
-      bigdatacluster:
-        aliases:
-         - zknode1.bigdatacluster.com
-    environment:
-       ZOO_MY_ID: 1
-       ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
-    healthcheck:
-      test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
-
-  zknode2:
-    image: zookeeper
-    container_name: zknode2
-    hostname: zknode2.bigdatacluster
-    mem_limit: ${ZOOKEEPER_MEM_LIM}
-    mem_reservation: ${ZOOKEEPER_MEM_RES}
-    volumes:
-      - zknode2_data:/data
-      - zknode2_log:/datalog
-    networks:
-      bigdatacluster:
-        aliases:
-         - zknode2.bigdatacluster.com
-    environment:
-      ZOO_MY_ID: 2
-      ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
-    healthcheck:
-      test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
-
-  zknode3:
-    image: zookeeper
-    container_name: zknode3
-    hostname: zknode3.bigdatacluster
-    mem_limit: ${ZOOKEEPER_MEM_LIM}
-    mem_reservation: ${ZOOKEEPER_MEM_RES}
-    volumes:
-      - zknode3_data:/data
-      - zknode3_log:/datalog
-    networks:
-      bigdatacluster:
-        aliases:
-         - zknode3.bigdatacluster.com
-    environment:
-      ZOO_MY_ID: 1
-      ZOO_SERVERS: server.1=zknode1.bigdatacluster:2888:3888 server.2=zknode2.bigdatacluster:2888:3888 server.3=zknode3.bigdatacluster:2888:3888
-    healthcheck:
-      test: ["CMD-SHELL", "netstat -tuplen | grep 2181 || exit 1"]
-
-  kafka1:
-    image: bigdata-kafka:0.2
-    container_name: kafka1
-    hostname: kafka1.bigdatacluster
-    mem_limit: ${KAFKA_MEM_LIM}
-    mem_reservation: ${KAFKA_MEM_RES}
-    networks:
-      bigdatacluster:
-        aliases:
-         - kafka1.bigdatacluster.com
-    depends_on:
-      - zknode1
-      - zknode2
-      - zknode3
-    environment:
-      KAFKA_HOST: kafka1.bigdatacluster
-      KAFKA_PORT: 9092
-      ZOOKEEPER_CONNECT: zknode1.bigdatacluster:2181,zknode2.bigdatacluster:2181,zknode3.bigdatacluster:2181
-      KAFKA_ID: 0
-
-  kafka2:
-    image: bigdata-kafka:0.2
-    container_name: kafka2
-    hostname: kafka2.bigdatacluster
-    mem_limit: ${KAFKA_MEM_LIM}
-    mem_reservation: ${KAFKA_MEM_RES}
-    networks:
-      bigdatacluster:
-        aliases:
-         - kafka2.bigdatacluster.com
-    depends_on:
-      - zknode1
-      - zknode2
-      - zknode3
-    environment:
-      KAFKA_HOST: kafka2.bigdatacluster
-      KAFKA_PORT: 9092
-      ZOOKEEPER_CONNECT: zknode1.bigdatacluster:2181,zknode2.bigdatacluster:2181,zknode3.bigdatacluster:2181
-      KAFKA_ID: 1
-
-  kafka3:
-    image: bigdata-kafka:0.2
-    container_name: kafka3
-    hostname: kafka3.bigdatacluster
-    mem_limit: ${KAFKA_MEM_LIM}
-    mem_reservation: ${KAFKA_MEM_RES}
-    networks:
-      bigdatacluster:
-        aliases:
-         - kafka3.bigdatacluster.com
-    depends_on:
-      - zknode1
-      - zknode2
-      - zknode3
-    environment:
-      KAFKA_HOST: kafka3.bigdatacluster
-      KAFKA_PORT: 9092
-      ZOOKEEPER_CONNECT: zknode1.bigdatacluster:2181,zknode2.bigdatacluster:2181,zknode3.bigdatacluster:2181
-      KAFKA_ID: 2
- 
-
-  nginx:
-    image: nginx
-    container_name: nginx
-    hostname: nginx.bigdatacluster
-    mem_limit: ${NGINX_MEM_LIM}
-    mem_reservation: ${NGINX_MEM_RES}
-    networks:
-     bigdatacluster:
-        aliases:
-           - nginx.bigdatacluster.com
-    ports:
-       - "80:80"
-       - "8042:8042"
-       - "8080:8080"
-       - "8081:8081"
-       - "8088:8088" 
-       - "8188:8188"
-       - "8793:8793" 
-       - "9090:9090"
-       - "10002:10002" 
-       - "50070:50070"
-       - "50075:50075" 
-    volumes:
-       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - hadoop-namenode
-      - hadoop-datanode1
-      - hadoop-datanode2
-      - hadoop-datanode3
-      - yarn-historyserver
-      - yarn-resourcemanager  
-      - yarn-nodemanager1
-      - yarn-nodemanager2
-      - yarn-nodemanager3
-      - spark-master
-      - spark-worker1
-      - spark-worker2
-      - spark-worker3
-      - airflow-webui
-      - airflow-worker1      
-   
-  airflow-webui:
-    image: airflow-webui:0.2
-    container_name: airflow-webui
-    hostname: airflow-webui.bigdatacluster
-    mem_limit: ${AIRFLOW_WEB_MEM_LIM}
-    mem_reservation: ${AIRFLOW_WEB_MEM_RES}
-    volumes:
-      - airflow_dag:/usr/local/airflow/dags
-      - airflow_log:/usr/local/airflow/logs
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-        bigdatacluster:
-          aliases:
-            - airflowwebui.bigdatacluster.com
-    environment:
-      - CLUSTER_NAME=bigdatacluster
-    env_file:
-      - ./bigdata-cluster.env
-    user: "1000"
-    command: webserver
-
-  airflow-scheduler:
-    image: airflow-scheduler:0.2
-    container_name: airflow-scheduler
-    hostname: airflow-scheduler.bigdatacluster
-    mem_limit: ${AIRFLOW_SCH_MEM_LIM}
-    mem_reservation: ${AIRFLOW_SCH_MEM_RES}
-    volumes:
-      - airflow_dag:/usr/local/airflow/dags
-      - airflow_log:/usr/local/airflow/logs
-    depends_on:
-      airflow-webui:
-        condition: service_healthy
-    networks:
-        bigdatacluster:
-          aliases:
-            - airflowscheduler.bigdatacluster.com
-    environment:
-      - CLUSTER_NAME=bigdatacluster
-    env_file:
-      - ./bigdata-cluster.env
-    user: "1000"
-    command: scheduler
-
-  airflow-worker1:
-    image: airflow-worker:0.2
-    container_name: airflow-worker1
-    hostname: airflow-worker1.bigdatacluster
-    mem_limit: ${AIRFLOW_WRK_MEM_LIM}
-    mem_reservation: ${AIRFLOW_WRK_MEM_RES}
-    volumes:
-      - airflow_dag:/usr/local/airflow/dags
-      - airflow_log:/usr/local/airflow/logs
-    depends_on:
-      airflow-scheduler:
-        condition: service_healthy
-    networks:
-        bigdatacluster:
-          aliases:
-            - airflowworker1.bigdatacluster.com
-    environment:
-      - CLUSTER_NAME=bigdatacluster
-    env_file:
-      - ./bigdata-cluster.env
-    user: "1000"
-    command: worker
-
-      
+services:     
   hadoop-namenode:
-    image: hadoop-namenode:0.2
+    image: hadoop-namenode:0.3
     container_name: hadoop-namenode
     hostname: hadoop-namenode.bigdatacluster
     mem_limit: ${HADOOP_NN_MEM_LIM}
@@ -271,12 +13,14 @@ services:
           aliases:
             - namenode.bigdatacluster.com
     environment:
-      - CLUSTER_NAME=bigdatacluster
+      - CLUSTER_NAME=wasbhadoopcluster
+      - CORE_CONF_fs_defaultFS  
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
 
   hadoop-datanode1:
-    image: hadoop-datanode:0.2
+    image: hadoop-datanode:0.3
     container_name: hadoop-datanode1
     hostname: hadoop-datanode1.bigdatacluster
     mem_limit: ${HADOOP_DN_MEM_LIM}
@@ -290,11 +34,14 @@ services:
         bigdatacluster:
           aliases:
             - datanode1.bigdatacluster.com
+    environment:
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
 
   hadoop-datanode2:
-    image: hadoop-datanode:0.2
+    image: hadoop-datanode:0.3
     container_name: hadoop-datanode2
     hostname: hadoop-datanode2.bigdatacluster
     mem_limit: ${HADOOP_DN_MEM_LIM}
@@ -308,12 +55,15 @@ services:
         bigdatacluster:
           aliases:
             - datanode2.bigdatacluster.com
+    environment:
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
 
 
   hadoop-datanode3:
-    image: hadoop-datanode:0.2
+    image: hadoop-datanode:0.3
     container_name: hadoop-datanode3
     hostname: hadoop-datanode3.bigdatacluster
     mem_limit: ${HADOOP_DN_MEM_LIM}
@@ -327,12 +77,14 @@ services:
         bigdatacluster:
           aliases:
             - datanode3.bigdatacluster.com
+    environment:
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
 
-
   yarn-resourcemanager:
-    image: yarn-resourcemanager:0.2
+    image: yarn-resourcemanager:0.3
     container_name: yarn-resourcemanager
     hostname: yarn-resourcemanager.bigdatacluster
     mem_limit: ${YARN_RM_MEM_LIM}
@@ -344,11 +96,14 @@ services:
     depends_on:
       hadoop-namenode:
          condition: service_healthy
+    environment:
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
   
   yarn-historyserver:
-    image: yarn-historyserver:0.2
+    image: yarn-historyserver:0.3
     container_name: yarn-historyserver
     hostname: yarn-historyserver.bigdatacluster
     mem_limit: ${YARN_HS_MEM_LIM}
@@ -362,11 +117,14 @@ services:
         bigdatacluster:
           aliases:
             - historyserver.bigdatacluster.com
+    environment:
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
   
   yarn-nodemanager1:
-    image: yarn-nodemanager:0.2
+    image: yarn-nodemanager:0.3
     container_name: yarn-nodemanager1
     hostname: yarn-nodemanager1.bigdatacluster
     mem_limit: ${YARN_NM_MEM_LIM}
@@ -378,11 +136,14 @@ services:
     depends_on:
       yarn-resourcemanager:
          condition: service_healthy
+    environment:
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
 
   yarn-nodemanager2:
-    image: yarn-nodemanager:0.2
+    image: yarn-nodemanager:0.3
     container_name: yarn-nodemanager2
     hostname: yarn-nodemanager2.bigdatacluster
     mem_limit: ${YARN_NM_MEM_LIM}
@@ -394,11 +155,14 @@ services:
     depends_on:
       yarn-resourcemanager:
          condition: service_healthy
+    environment:
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
 
   yarn-nodemanager3:
-    image: yarn-nodemanager:0.2
+    image: yarn-nodemanager:0.3
     container_name: yarn-nodemanager3
     hostname: yarn-nodemanager3.bigdatacluster
     mem_limit: ${YARN_NM_MEM_LIM}
@@ -410,199 +174,33 @@ services:
     depends_on:
       yarn-resourcemanager:
          condition: service_healthy
-    env_file:
-      - ./bigdata-cluster.env
-  
-  hive-metastore:
-    image: hive-metastore:0.2
-    container_name: hive-metastore
-    hostname: hive-metastore.bigdatacluster
-    mem_limit: ${HIVE_MS_MEM_LIM}
-    mem_reservation: ${HIVE_MS_MEM_RES}
-    networks:
-      bigdatacluster:
-        aliases:
-           - hivemetastore.bigdatacluster.com
-    depends_on:
-      postgres:
-           condition: service_healthy
-    env_file:
-      - ./bigdata-cluster.env
-    command: /opt/hive/bin/hive --service metastore
-
-  hive-server:
-    image: hive-server:0.2
-    container_name: hive-server
-    hostname: hive-server.bigdatacluster 
-    mem_limit: ${HIVE_HS_MEM_LIM}
-    mem_reservation: ${HIVE_HS_MEM_RES}
-    networks:
-      bigdatacluster:
-        aliases:
-           - hiveserver.bigdatacluster.com
-    depends_on:
-      hive-metastore:
-          condition: service_healthy
-    env_file:
-      - ./bigdata-cluster.env
-
-
-  spark-master:
-    image: spark-master:0.2
-    container_name: spark-master
-    hostname: spark-master.bigdatacluster
-    mem_limit: ${SPARK_MS_MEM_LIM}
-    mem_reservation: ${SPARK_MS_MEM_RES}
-    networks:
-        bigdatacluster:
-          aliases:
-            - sparkmaster.bigdatacluster.com
-    volumes:
-       - spark_master_logs:/var/log/spark-master   
-    depends_on:
-      yarn-resourcemanager:
-         condition: service_healthy
-    env_file:
-      - ./bigdata-cluster.env
-
-  spark-worker1:
-    image: spark-worker:0.2
-    container_name: spark-worker1
-    hostname: spark-worker1.bigdatacluster
-    mem_limit: ${SPARK_WN_MEM_LIM}
-    mem_reservation: ${SPARK_WN_MEM_RES}
-    networks:
-        bigdatacluster:
-          aliases:
-            - sparkworker1.bigdatacluster.com
-    volumes:
-       - spark_worker1_logs:/var/log/spark-worker   
-    depends_on:
-       spark-master:
-         condition: service_healthy
     environment:
-       - SPARK_MASTER=sparkmaster.bigdatacluster.com:7077
+      - CORE_CONF_fs_defaultFS
+      - CORE_CONF_fs_azure_account_key_databanks_blob_core_windows_net
     env_file:
       - ./bigdata-cluster.env
-
-  spark-worker2:
-    image: spark-worker:0.2
-    container_name: spark-worker2
-    hostname: spark-worker2.bigdatacluster
-    mem_limit: ${SPARK_WN_MEM_LIM}
-    mem_reservation: ${SPARK_WN_MEM_RES}
-    networks:
-        bigdatacluster:
-          aliases:
-            - sparkworker2.bigdatacluster.com
-    volumes:
-       - spark_worker2_logs:/var/log/spark-worker   
-    depends_on:
-       spark-master:
-         condition: service_healthy
-    environment:
-       - SPARK_MASTER=spark://sparkmaster.bigdatacluster.com:7077
-    env_file:
-      - ./bigdata-cluster.env
-
-  spark-worker3:
-    image: spark-worker:0.2
-    container_name: spark-worker3
-    hostname: spark-worker3.bigdatacluster
-    mem_limit: ${SPARK_WN_MEM_LIM}
-    mem_reservation: ${SPARK_WN_MEM_RES}
-    networks:
-        bigdatacluster:
-          aliases:
-            - sparkworker3.bigdatacluster.com
-    volumes:
-       - spark_worker3_logs:/var/log/spark-worker   
-    depends_on:
-       spark-master:
-         condition: service_healthy
-    environment:
-       - SPARK_MASTER=spark://sparkmaster.bigdatacluster.com:7077
-    env_file:
-      - ./bigdata-cluster.env
-    
-  
+   
 volumes:
-  redis_data:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/redis/data
-  postgres_pgdata:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/postgres/pgdata
-  airflow_dag:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/airflow/dags
-  airflow_log:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/airflow/logs               
-  zknode1_data:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/zookeeper/zknode1/data
-  zknode1_log:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/zookeeper/zknode1/log
-  zknode2_data:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/zookeeper/zknode2/data
-  zknode2_log:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/zookeeper/zknode2/log
-  zknode3_data:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/zookeeper/zknode3/data
-  zknode3_log:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/zookeeper/zknode3/log 
   hadoop_namenode:
           driver: local-persist
           driver_opts:
-               mountpoint: /data1/dockervolumes/hadoop/nn   
+               mountpoint: /datadisk/dockervolumes/masters/hadoop/nn   
   hadoop_datanode1:
           driver: local-persist
           driver_opts:
-               mountpoint: /data2/dockervolumes/hadoop/dn1
+               mountpoint: /datadisk/dockervolumes/workers/hadoop/dn1
   hadoop_datanode2:
           driver: local-persist
           driver_opts:
-               mountpoint: /data2/dockervolumes/hadoop/dn2
+               mountpoint: /datadisk/dockervolumes/workers/hadoop/dn2
   hadoop_datanode3:
           driver: local-persist
           driver_opts:
-               mountpoint: /data2/dockervolumes/hadoop/dn3
+               mountpoint: /datadisk/dockervolumes/workers/hadoop/dn3
   hadoop_historyserver:
           driver: local-persist
           driver_opts:
-               mountpoint: /data1/dockervolumes/yarn/hs
-  spark_master_logs:
-          driver: local-persist
-          driver_opts:
-               mountpoint: /data1/dockervolumes/spark/master/logs
-  spark_worker1_logs:
-         driver: local-persist
-         driver_opts:
-               mountpoint: /data2/dockervolumes/spark/worker1/logs
-  spark_worker2_logs:
-         driver: local-persist
-         driver_opts:
-               mountpoint: /data2/dockervolumes/spark/worker2/logs
-  spark_worker3_logs:
-         driver: local-persist
-         driver_opts:
-               mountpoint: /data2/dockervolumes/spark/worker3/logs
+               mountpoint: /datadisk/dockervolumes/masters/yarn/hs
 networks:
   bigdatacluster:
     external: true
