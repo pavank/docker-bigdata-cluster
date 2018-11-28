@@ -29,7 +29,7 @@ Make sure you open the ports `2181-2183,2888-2890,3888-3890,8042,8080,8081,8088,
 
 ## Configuration
 
-`bigdata-cluster.env` has required hostname/FQDN configuration for cluster services to talk to each other. If you change hostnames/network alias in `docker-compose.yml` make sure you update the configurations before launching the containers 
+`bigdata-cluster.env` has required configurations for cluster services to talk to each other. If you change hostnames/network alias in `docker-compose.yml` make sure you update the configurations before launching the containers 
 
 Sometimes `docker-compose.yml` itself has configuration set under `environment:` section specific to that container.   
 _e.g:_ `spark_worker` containers has `spark_master` URI set.
@@ -53,9 +53,14 @@ During launch there configurations are uploaded as Environment variables and nec
 
 ### Step-3 : Booting up the whole cluster
 
-- Run the below command from top level folder
+- Run the below command from top level folder  
   `sudo docker-compose --project-name=devcluster up -d`
-- To shutdown the cluster the command is
+  
+## Shutting down the Cluster
+To shutdown the cluster 
+ - Stop deamons in containers  
+  `./shutdown-services.sh`
+ - Then dro pthe containers  
   `sudo docker-compose --project-name=devcluster down`  
 
 ## Cluster Resource Management
@@ -83,7 +88,7 @@ Let's say if your Docker Host has a DNS name of `myhostmachine.com` now you can 
 
 
 - YARN Resourcemanager: http://myhostmachine:8088/cluster/    
-- YARN Historyserver: http://myhostmachine.com:19888/applicationhistory  
+- YARN Historyserver: http://myhostmachine.com:8188/applicationhistory  
 - YARN Nodes:   
       - nodemanager1: http://myhostmachine.com:8042/nodemanager1/node/  
       - nodemanager2: http://myhostmachine.com:8042/nodemanager2/node/  
@@ -95,6 +100,7 @@ Let's say if your Docker Host has a DNS name of `myhostmachine.com` now you can 
   - sparkworker1: http://myhostmachine.com:8081/sparkworker1/
   - sparkworker2: http://myhostmachine.com:8081/sparkworker2/
   - sparkworker3: http://myhostmachine.com:8081/sparkworker3/
+  
 - Hive server : http://myhostmachine.com:10002/
 
 
