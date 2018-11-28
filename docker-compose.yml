@@ -75,24 +75,7 @@ services:
     env_file:
       - ./bigdata-cluster.env
       - ./secrets.env
-
-  yarn-resourcemanager:
-    image: yarn-resourcemanager:0.3
-    container_name: yarn-resourcemanager
-    hostname: yarn-resourcemanager.bigdatacluster
-    mem_limit: ${YARN_RM_MEM_LIM}
-    mem_reservation: ${YARN_RM_MEM_RES}
-    networks:
-        bigdatacluster:
-          aliases:
-            - resourcemanager.bigdatacluster.com
-    depends_on:
-      hadoop-namenode:
-         condition: service_healthy
-    env_file:
-      - ./bigdata-cluster.env
-      - ./secrets.env
-  
+ 
   yarn-historyserver:
     image: yarn-historyserver:0.3
     container_name: yarn-historyserver
@@ -100,7 +83,7 @@ services:
     mem_limit: ${YARN_HS_MEM_LIM}
     mem_reservation: ${YARN_HS_MEM_RES}
     depends_on:
-      yarn-resourcemanager:
+      hadoop-namenode:
          condition: service_healthy
     volumes:
       - hadoop_historyserver:/hadoop/yarn/timeline
@@ -123,7 +106,7 @@ services:
           aliases:
             - nodemanager1.bigdatacluster.com
     depends_on:
-      yarn-resourcemanager:
+      hadoop-namenode:
          condition: service_healthy
     env_file:
       - ./bigdata-cluster.env
@@ -140,7 +123,7 @@ services:
           aliases:
             - nodemanager2.bigdatacluster.com
     depends_on:
-      yarn-resourcemanager:
+      hadoop-namenode:
          condition: service_healthy
     env_file:
       - ./bigdata-cluster.env
@@ -157,11 +140,31 @@ services:
           aliases:
             - nodemanager3.bigdatacluster.com
     depends_on:
-      yarn-resourcemanager:
+      hadoop-namenode:
          condition: service_healthy
     env_file:
       - ./bigdata-cluster.env
       - ./secrets.env  
+
+  yarn-resourcemanager:
+    image: yarn-resourcemanager:0.3
+    container_name: yarn-resourcemanager
+    hostname: yarn-resourcemanager.bigdatacluster
+    mem_limit: ${YARN_RM_MEM_LIM}
+    mem_reservation: ${YARN_RM_MEM_RES}
+    networks:
+        bigdatacluster:
+          aliases:
+            - resourcemanager.bigdatacluster.com
+    depends_on:
+      - yarn-nodemanager1
+      - yarn-nodemanager2
+      - yarn-nodemanager3
+      - yarn-historyserver
+    env_file:
+      - ./bigdata-cluster.env
+      - ./secrets.env
+
    
 volumes:
   hadoop_namenode:
